@@ -89,6 +89,7 @@ $$Var[r_t\psi_t(.)]=C_{var}$$ where $r_t=\sqrt{\frac{C_{var}}{Var[\psi_t(.)]}}$�
 因為數值計算穩定，作者使用 first-order 展開近似 $Var[\psi_t(.)]$：
 
 $$\sqrt{\psi^2(.)}\approx\sqrt{E[\psi^2(.)]}+\frac{1}{2E[\psi^2(.)]}(\psi^2(.)-E[\psi^2(.)])，$$
+
 兩邊取 Var 可得
 
 $$Var[\psi_t(.)]\approx\frac{Var[\psi_t^2(.)]}{4E[\psi^2(.)]}=\frac{\rho_t}{2(\rho_t-2)(\rho_t-4)\sigma^2}=O(\frac{1}{\rho_t})。$$
