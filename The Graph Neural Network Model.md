@@ -9,6 +9,7 @@ paper: https://persagen.com/files/misc/scarselli2009graph.pdf
 
 ## Introduction
 ![](https://i.imgur.com/qAiQ84j.png)
+
 首先介紹圖結構的問題是什麼樣子，有很多結構都可以用 graph 來表示。例如化學式，用 node 代表原子用 edge 代表鍵；或是這張城堡的圖畫，把顏色同質的區域點用一個點來代表它，在圖上是相鄰就用邊連接。
 
 GNN 想解的問題就是產生一個函數，給你整張圖或圖跟一個點，能夠輸出實數，這兩種分別是：
@@ -18,6 +19,7 @@ GNN 想解的問題就是產生一個函數，給你整張圖或圖跟一個點�
     例：黑點代表是屬於城堡，把位置定位出來
     
 ![](https://i.imgur.com/sRyTBvf.png)
+
 如何來解這個問題? 在這篇之前有這些方法:
 - preprocessing
     把圖的結構mapping到比較容易的表示法，例如向量，人為定義出來的。
@@ -31,7 +33,9 @@ GNN 想解的問題就是產生一個函數，給你整張圖或圖跟一個點�
 RvNN跟RW可視為 GNN 的特例
 
 ## The model
+
 ![](https://i.imgur.com/OAxHJMB.png)
+
 首先介紹一下 notation，graph 由 node 跟 edge 組成
 - ne[n]
     與n相接的點
@@ -43,6 +47,7 @@ RvNN跟RW可視為 GNN 的特例
 之後講的圖都假設無向，有環，有向的話就把方向設定在邊的 label 裡。
 
 ![](https://i.imgur.com/BqobEG3.png)
+
 GNN model 就是給每個點一個狀態 $x_n$，下標 n 代表點是 n 的狀態，由點 n 與點的周邊 label 來計算 (f，用 NN 來算，會有parameter omega)，再根據自己的 state 跟 label 輸出 output（g，用 NN）。
 - f: transition function
 - g: output function
@@ -54,6 +59,7 @@ GNN model 就是給每個點一個狀態 $x_n$，下標 n 代表點是 n 的狀�
 接著巴拿赫定理可以保證存在一個不動點 (使得怎麼計算都維持不變) 而且可以透過一直計算來找到它。
 
 ![](https://i.imgur.com/Cm18Hwf.png)
+
 GNN 的計算方法就是一直去算 f 更新狀態，一直到平衡，然後經過 g 輸出 output（f 跟 g 都用FNN來實現）。
 
 第三個圖是表示計算的流程，t 從 $t_0$ 一直到 T，以第二個點來看，它需要 1 跟 4 的 state 跟 label 來計算。
@@ -77,6 +83,7 @@ FG都是一個 FNN，之後會講。
 main 就是一個標準 gradient descent，forward 的 x 跟 backward 的 z 會一直去更新直到與前一次迭代夠靠近。
 
 ![](https://i.imgur.com/hw3JuG2.png)
+
 G 沒有什麼限制，F 要服從 contraction mapping 的性質，這篇提供一種 Linear 一種 Nonlinear 的實現方法
 
 - L
@@ -91,9 +98,10 @@ G 沒有什麼限制，F 要服從 contraction mapping 的性質，這篇提供�
 
 實驗顯示NL比L好
 
-
 ## Experiments
+
 ![](https://i.imgur.com/pR5XRr1.png)
+
 目的是要定位出 graph G 裡的 subgraph S，是 node-focused 問題，試圖分類每個 node 是否屬於 S ，每個dataset有 600 個graph，平均分成train validation test。
 
 圖產生的方式是每個 node pair 有 0.2 的機率隨機連接，然後強制讓每個圖都含有 S 在裡頭，給每個點一個[0, 10]的整數（s的數字固定），加隨機N(0, 0.25)。
@@ -109,6 +117,7 @@ G 沒有什麼限制，F 要服從 contraction mapping 的性質，這篇提供�
 [pytorch implement](https://github.com/zhowzeng/subgraph-matching)
 
 ![](https://i.imgur.com/1g2VGn9.png)
+
 230 個硝基芳香族，目標是找出會誘發突變的化合物，graph-focused 問題。
 
 一個化合物平均有26個原子。
